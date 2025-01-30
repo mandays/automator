@@ -1,0 +1,34 @@
+style: github
+template: CHANGELOG.tpl.md
+info:
+  title: CHANGELOG
+  repository_url: placeholder_will_be_replaced_later
+options:
+  commits:
+     filters:
+       Type:
+         - feat
+         - fix
+         - refactor
+         - chore
+         - docs
+         - test
+         - ci
+  commit_groups:
+     title_maps:
+       feat: Features
+       fix: Bug Fixes
+       refactor: Code Refactoring
+       chore: Chores
+       docs: Documentations
+       test: Tests
+       ci: Continous Integrations
+  header:
+    pattern: "^(\\w*)(?:\\(([\\w\\$\\.\\-\\*\\s]*)\\))?\\:\\s(.*)$"
+    pattern_maps:
+      - Type
+      - Scope
+      - Subject
+  notes:
+    keywords:
+      - BREAKING CHANGE

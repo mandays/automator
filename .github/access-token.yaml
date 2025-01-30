@@ -1,0 +1,35 @@
+origin: mandays/automator
+statements:
+  - subjects:
+    - 'repo:${origin}:ref:refs/heads/main'
+    - 'repo:${origin}:ref:refs/tags/v*'
+    permissions:
+      actions: read
+      actions-variables: write
+      checks: read
+      codespaces: read
+      codespaces-lifecycle-admin: read
+      codespaces-metadata: read
+      codespaces-secrets: read
+      contents: write
+      custom-properties: read
+      dependabot-secrets: read
+      deployments: read
+      discussions: read
+      environments: read
+      issues: read
+      merge-queues: read
+      packages: write
+      pages: read
+      projects: admin
+      pull-requests: read
+      repository-advisories: read
+      repository-hooks: read
+      repository-projects: read
+      secret-scanning-alerts: read
+      secrets: read
+      security-events: read
+      statuses: read
+      team-discussions: read
+      vulnerability-alerts: read
+      workflows: read

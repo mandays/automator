@@ -1,0 +1,34 @@
+name: pre-commit
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  pre_commit:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mandays/automator:v0.0.1
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GH_TOKEN }}
+      options: --user root
+    steps:
+      -
+        name: Before checkout
+        shell: bash
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 20
+      -
+        name: Run pre-commit check
+        run: pre-commit run -a

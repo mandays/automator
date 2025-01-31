@@ -67,7 +67,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/mandays/automator:v0.0.1
+      image: ghcr.io/mandays/automator:latest
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GH_TOKEN }}

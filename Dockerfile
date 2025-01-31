@@ -112,8 +112,6 @@ RUN apk update && apk upgrade \
 
 ENV PATH=/opt/venv/bin:$PATH
 
-COPY config.yaml ${WORK_DIR}
-
 COPY entrypoint.sh /usr/local/bin/
 COPY .pre-commit-config.mandatory.yaml ${WORK_DIR}
 COPY scripts ${WORK_DIR}

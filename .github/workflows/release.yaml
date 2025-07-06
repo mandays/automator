@@ -89,11 +89,13 @@ jobs:
       -
         name: Generate CHANGELOG.md
         run: |
+          LATEST_TAG=$(git describe --tags --abbrev=0)
+
           git-chglog \
           --config /automator/.chglog/config.yml \
           --template /automator/.chglog/CHANGELOG.tpl.md \
           --repository-url "https://github.com/${{ github.repository }}" \
-          --output CHANGELOG.md ${{ env.TAG }}
+          --output CHANGELOG.md ${LATEST_TAG}
       -
         uses: qoomon/actions--access-token@v3
         id: access-token

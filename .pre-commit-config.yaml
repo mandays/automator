@@ -25,7 +25,7 @@ repos:
       - id: terragrunt-hclfmt
 
   - repo: https://github.com/zricethezav/gitleaks
-    rev: v8.27.2
+    rev: v8.29.0
     hooks:
       - id: gitleaks
 

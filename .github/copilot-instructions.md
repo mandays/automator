@@ -45,7 +45,7 @@ Types: feat|fix|refactor|chore|docs|test|ci
 │   ├── check.sh                      # Terragrunt validation
 │   ├── terraform.sh                  # ECS task definitions
 │   └── trivy.sh                      # Security scanning
-└── tenv/*/version                    # IaC tool versions: Terraform 1.9.0, OpenTofu 1.9.5, Terragrunt 1.157.0, Atmos 0.72.5
+└── tenv/*/version                    # IaC tool versions: Terraform 1.9.5, OpenTofu 1.9.0, Terragrunt 0.72.5, Atmos 1.157.0
 ```
 
 **Version locations**: Dockerfile ARG (lines 6-13, 76-79), tenv/*/version files

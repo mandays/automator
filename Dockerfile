@@ -86,8 +86,8 @@ RUN wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform
     && chmod +x /usr/local/bin/terramate \
     && wget https://github.com/opentofu/opentofu/releases/download/v${OPENTOFU_VERSION}/tofu_${OPENTOFU_VERSION}_amd64.apk -O tofu_${OPENTOFU_VERSION}_amd64.apk \
     && apk add --allow-untrusted tofu_${OPENTOFU_VERSION}_amd64.apk \
-    && mv /usr/bin/tofu /usr/local/bin/tofu || true \
-    && chmod +x /usr/local/bin/tofu || true \
+    && mv /usr/bin/tofu /usr/local/bin/tofu \
+    && chmod +x /usr/local/bin/tofu \
     && rm -f tofu_${OPENTOFU_VERSION}_amd64.apk \
     && rm -f *.zip *.tar.gz *.deb data.tar.* control.tar.* || true
 

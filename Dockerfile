@@ -10,6 +10,11 @@ ARG TRIVY_VERSION="0.67.2"
 ARG YQ_VERSION="4.48.1"
 ARG CHGLOG_VERSION="0.15.4"
 
+ARG TERRAFORM_VERSION="1.13.5"
+ARG TERRAGRUNT_VERSION="0.72.5"
+ARG TERRAMATE_VERSION="0.14.7"
+ARG OPENTOFU_VERSION="1.10.7"
+
 ARG PIPENV_VERSION="2025.0.3"
 
 RUN apk update && apk upgrade \
@@ -67,16 +72,35 @@ RUN wget https://github.com/git-chglog/git-chglog/releases/download/v${CHGLOG_VE
     && mv git-chglog /usr/local/bin/ \
     && chmod +x /usr/local/bin/git-chglog
 
+# Install Terraform, Terragrunt, Terramate and OpenTofu into /usr/local/bin
+RUN wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
+    && unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
+    && mv terraform /usr/local/bin/ \
+    && chmod +x /usr/local/bin/terraform \
+    && wget https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_linux_amd64 -O /usr/local/bin/terragrunt \
+    && chmod +x /usr/local/bin/terragrunt \
+    && wget https://github.com/terramate-io/terramate/releases/download/v${TERRAMATE_VERSION}/terramate_${TERRAMATE_VERSION}_linux_amd64.deb \
+    && ar x terramate_${TERRAMATE_VERSION}_linux_amd64.deb \
+    && tar -xf data.tar.* \
+    && mv usr/bin/terramate /usr/local/bin/ \
+    && chmod +x /usr/local/bin/terramate \
+    && wget https://github.com/opentofu/opentofu/releases/download/v${OPENTOFU_VERSION}/tofu_${OPENTOFU_VERSION}_amd64.apk -O tofu_${OPENTOFU_VERSION}_amd64.apk \
+    && apk add --allow-untrusted tofu_${OPENTOFU_VERSION}_amd64.apk \
+    && mv /usr/bin/tofu /usr/local/bin/tofu \
+    && chmod +x /usr/local/bin/tofu \
+    && rm -f tofu_${OPENTOFU_VERSION}_amd64.apk \
+    && rm -f *.zip *.tar.gz *.deb data.tar.* control.tar.* || true
+
 
 FROM alpine:${ALPINE_VERSION}
 
 COPY --from=builder /usr/local/bin /usr/local/bin
-COPY --from=builder /opt /opt
 
 ARG PULUMI_VERSION="3.170.0-r3"
 ARG PRE_COMMIT_VERSION="4.2.0-r0"
 ARG AWSCLI_VERSION="2.27.25-r0"
 ARG GO_VERSION="1.24.9-r0"
+ARG PIPENV_VERSION="2025.0.3"
 
 # NOTE: TENV_VERSION should always track the upstream tenv version (e.g., "4.7.6"), not the Alpine package version.
 ARG TENV_VERSION="4.7.6"
@@ -85,12 +109,6 @@ ENV TENV_AUTO_INSTALL="true"
 ARG APP_USER="automator"
 ARG APP_GROUP="automator"
 ARG WORK_DIR="/automator"
-
-ARG TENV_ROOT="${WORK_DIR}/.tenv"
-ARG TOFU_DIR="${TENV_ROOT}/OpenTofu"
-ARG TF_DIR="${TENV_ROOT}/Terraform"
-ARG TG_DIR="${TENV_ROOT}/Terragrunt"
-ARG AT_DIR="${TENV_ROOT}/Atmos"
 
 WORKDIR ${WORK_DIR}
 
@@ -105,19 +123,17 @@ RUN apk update && apk upgrade \
     pulumi=${PULUMI_VERSION} \
     aws-cli=${AWSCLI_VERSION} \
     go=${GO_VERSION} \
-    tenv --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/
+    python3=3.12.12-r0 \
+    py3-pip=25.1.1-r0
 
-ENV PATH=/opt/venv/bin:$PATH
+RUN pip install --no-cache-dir pipenv==${PIPENV_VERSION}
+
+ENV PATH=/usr/local/bin:$PATH
 
 COPY entrypoint.sh /usr/local/bin/
 COPY .pre-commit-config.mandatory.yaml ${WORK_DIR}
 COPY scripts ${WORK_DIR}
 COPY .chglog ${WORK_DIR}/.chglog
-
-COPY tenv/OpenTofu/version ${TOFU_DIR}/
-COPY tenv/Terraform/version ${TF_DIR}/
-COPY tenv/Terragrunt/version ${TG_DIR}/
-COPY tenv/Atmos/version ${AT_DIR}/
 
 RUN addgroup -S ${APP_GROUP} \
     && adduser -S ${APP_USER} -G ${APP_GROUP} \

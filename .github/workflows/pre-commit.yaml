@@ -14,9 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mandays/automator:latest
-      credentials:
-        username: ${{ github.actor }}
-        password: ${{ secrets.GH_TOKEN }}
       options: --user root
     steps:
       -

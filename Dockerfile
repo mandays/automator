@@ -126,7 +126,7 @@ RUN apk update && apk upgrade \
     python3=3.12.12-r0 \
     py3-pip=25.1.1-r0
 
-RUN pip install --no-cache-dir pipenv==${PIPENV_VERSION} || true
+RUN pip install --no-cache-dir pipenv==${PIPENV_VERSION}
 
 ENV PATH=/usr/local/bin:$PATH
 

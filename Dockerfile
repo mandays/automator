@@ -78,7 +78,8 @@ ARG PRE_COMMIT_VERSION="4.2.0-r0"
 ARG AWSCLI_VERSION="2.27.25-r0"
 ARG GO_VERSION="1.24.9-r0"
 
-ARG TENV_VERSION="4.7.6-r4"
+# NOTE: TENV_VERSION should always track the upstream tenv version (e.g., "4.7.6"), not the Alpine package version.
+ARG TENV_VERSION="4.7.6"
 ENV TENV_AUTO_INSTALL="true"
 
 ARG APP_USER="automator"

@@ -25,23 +25,23 @@ ARG PIPENV_VERSION="2025.0.3"
 # (No changes to the builder RUN steps)
 RUN apk update && apk upgrade \
     && apk add --no-cache \
-        bash=5.2.37-r0 \
+        bash=5.3.3-r1 \
         build-base=0.5-r3 \
-        ca-certificates=20250911-r0 \
-        curl=8.14.1-r2 \
-        git=2.49.1-r0 \
-        gnupg=2.4.7-r0 \
-        jq=1.8.0-r0 \
-        libffi-dev=3.4.8-r0 \
+        ca-certificates=20251003-r0 \
+        curl=8.17.0-r1 \
+        git=2.52.0-r0 \
+        gnupg=2.4.9-r0 \
+        jq=1.8.1-r0 \
+        libffi-dev=3.5.2-r0 \
         make=4.4.1-r3 \
-        openssh=10.0_p1-r9 \
+        openssh=10.2_p1-r0 \
         openssl-dev=3.5.4-r0 \
-        py3-pip=25.1.1-r0 \
+        py3-pip=25.1.1-r1 \
         python3=3.12.12-r0 \
-        unzip=6.0-r15 \
-        cosign=2.4.3-r6 \
-        wget=1.25.0-r1 \
-        binutils=2.44-r3 \
+        unzip=6.0-r16 \
+        cosign=2.4.3-r8 \
+        wget=1.25.0-r2 \
+        binutils=2.45.1-r0 \
     && ln -sf /usr/bin/python3 /usr/bin/python \
     && ln -sf /usr/bin/pip3 /usr/bin/pip
 
@@ -106,9 +106,9 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=go_builder /usr/local/go /usr/local/go
 # ---------------------------------------------------
 
-ARG PULUMI_VERSION="3.170.0-r3"
-ARG PRE_COMMIT_VERSION="4.2.0-r0"
-ARG AWSCLI_VERSION="2.27.25-r0"
+ARG PULUMI_VERSION="3.204.0-r1"
+ARG PRE_COMMIT_VERSION="4.5.0-r0"
+ARG AWSCLI_VERSION="2.32.7-r0"
 ARG PIPENV_VERSION="2025.0.3"
 
 # NOTE: TENV_VERSION should always track the upstream tenv version (e.g., "4.7.6"), not the Alpine package version.
@@ -124,16 +124,16 @@ WORKDIR ${WORK_DIR}
 # REMOVED: go=${GO_VERSION} from apk add
 RUN apk update && apk upgrade \
     && apk add --no-cache \
-    curl=8.14.1-r2 \
-    git=2.49.1-r0 \
-    jq=1.8.0-r0 \
-    perl=5.40.3-r0 \
-    cosign=2.4.3-r6 \
+    curl=8.17.0-r1 \
+    git=2.52.0-r0 \
+    jq=1.8.1-r0 \
+    perl=5.42.0-r0 \
+    cosign=2.4.3-r8 \
     pre-commit=${PRE_COMMIT_VERSION} \
     pulumi=${PULUMI_VERSION} \
     aws-cli=${AWSCLI_VERSION} \
     python3=3.12.12-r0 \
-    py3-pip=25.1.1-r0
+    py3-pip=25.1.1-r1
 
 # --- NEW: Add Go bin to PATH ---
 ENV PATH=/usr/local/go/bin:/usr/local/bin:$PATH

@@ -1,4 +1,4 @@
-ARG ALPINE_VERSION=3.23.2
+ARG ALPINE_VERSION=3.23.3
 
 # --- NEW: Helper stage to fetch exact Go version ---
 FROM golang:1.25.5-alpine AS go_builder
